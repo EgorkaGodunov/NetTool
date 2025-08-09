@@ -34,7 +34,7 @@ BTN_FG = "#b9b9b9"
 BTN_PRESSED_BG = "#2a2d36"
 HIGHLIGHT = "#3a3f4b"
 TAB_BG = "#2c313c"
-TEXT_BG = "#1e2227"
+TEXT_BG = "#2A2B33"
 LOADING_COLOR = "#4a6baf"
 FONT = "Segoe UI"
 
@@ -49,11 +49,17 @@ class DNSAnalyzerApp(QMainWindow):
         self.setStyleSheet(f"""
             QWidget {{ background: {DARK_BG}; color: {DARK_FG}; font-family: {FONT}; font-size: 10pt; }}
             QLineEdit, QComboBox {{ background: {ENTRY_BG}; color: {ENTRY_FG}; border: 1px solid {HIGHLIGHT}; }}
+            QComboBox QAbstractItemView {{
+            background: #f9f9f9;  /* светлый фон для выпадающего списка */
+            color: #23272e;       /* тёмный текст для читаемости */
+            selection-background-color: {HIGHLIGHT};
+            selection-color: {DARK_FG};
+            }}
             QPushButton {{
-                background: {BTN_BG}; color: {BTN_FG}; border: 1px solid {HIGHLIGHT}; padding: 4px 10px;
+            background: {BTN_BG}; color: {BTN_FG}; border: 1px solid {HIGHLIGHT}; padding: 4px 10px;
             }}
             QPushButton:pressed {{
-                background: {BTN_PRESSED_BG};
+            background: {BTN_PRESSED_BG};
             }}
             QTextEdit, QPlainTextEdit {{ background: {TEXT_BG}; color: {DARK_FG}; border: 1px solid {HIGHLIGHT}; }}
             QTabWidget::pane {{ border: 1px solid {HIGHLIGHT}; }}
@@ -127,7 +133,7 @@ class DNSAnalyzerApp(QMainWindow):
         self.history_combo.activated.connect(self.select_from_history)
         hist_layout.addWidget(self.history_combo)
         hist_layout.addWidget(QLabel("DKIM Selector:"))
-        self.dkim_selector_entry = QLineEdit("selector1")
+        self.dkim_selector_entry = QLineEdit("dkim")
         self.dkim_selector_entry.setFixedWidth(100)
         hist_layout.addWidget(self.dkim_selector_entry)
         hist_layout.addWidget(QLabel("DMARC Selector:"))
@@ -147,7 +153,7 @@ class DNSAnalyzerApp(QMainWindow):
         export_json_btn.clicked.connect(lambda: self.export_results('json'))
         dig_btn = QPushButton("Show dig format")
         dig_btn.clicked.connect(self.show_dig_format)
-        full_hist_btn = QPushButton("Полная история")
+        full_hist_btn = QPushButton("Full history")
         full_hist_btn.clicked.connect(self.show_full_history)
         export_layout.addWidget(export_txt_btn)
         export_layout.addWidget(export_json_btn)
